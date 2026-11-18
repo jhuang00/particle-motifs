@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Particle motifs · what the skill can make</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #0d0d0f; color: #d8d8de; font: 15px/1.55 "Instrument Sans", system-ui, sans-serif; padding: 48px clamp(16px, 4vw, 56px) 96px; -webkit-font-smoothing: antialiased; }
+  header { max-width: 60em; margin-bottom: 40px; }
+  h1 { font-size: clamp(30px, 3.4vw, 48px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; color: #fff; }
+  .lead { color: #9a9aa6; margin-top: 14px; max-width: 46em; }
+  h2 { font-size: 18px; font-weight: 500; color: #fff; margin: 56px 0 4px; }
+  .sub { color: #8c8c98; max-width: 52em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin-top: 18px; }
+  .grid.wide { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+  figure { margin: 0; }
+  canvas { display: block; width: 100%; aspect-ratio: 4 / 3; border-radius: 8px; background: #17171A; }
+  .wide canvas { aspect-ratio: 16 / 10; }
+  figcaption { margin-top: 10px; }
+  figcaption b { display: block; color: #fff; font-weight: 500; }
+  figcaption span { color: #8c8c98; font-size: 14px; }
+  code { display: block; margin-top: 8px; font: 12px/1.5 ui-monospace, "SF Mono", Menlo, monospace; color: #a9a9b4; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Particle motifs</h1>
+    <p class="lead">An agent skill that turns a concept, motif or symbol into a field of particles. Pick a form, choose how the particles spread around it, and choose whether it holds still or moves. Everything on this page is drawn live by the skill's single engine file.</p>
+  </header>
+
+  <h2>1 · Spread: how the particles sit around the form</h2>
+  <p class="sub">The same knot, eight ways. A spread sets how far points stray from the form and in what shape.</p>
+  <div class="grid" id="spreads"></div>
+
+  <h2>2 · Motion: static or moving</h2>
+  <p class="sub">The same figure-of-eight in each mode. Static draws once and stops; the others run continuously and pause when off screen.</p>
+  <div class="grid" id="motions"></div>
+
+  <h2>3 · From a concept to a motif</h2>
+  <p class="sub">What an agent produces from a one-line brief. Each example names the idea, the form chosen for it, and the spread and motion.</p>
+  <div class="grid wide" id="concepts"></div>
+
+<script src="../assets/particle-motif.js"></script>
+<script>
+(function () {
+  function card(host, title, note, opts, snippet) {
+    var f = document.createElement('figure');
+    f.innerHTML = '<canvas></canvas><figcaption><b>' + title + '</b><span>' + note + '</span>' + (snippet ? '<code>' + snippet + '</code>' : '') + '</figcaption>';
+    host.appendChild(f);
+    ParticleMotif.mount(f.querySelector('canvas'), opts);
+  }
+  function go() {
+    var S = document.getElementById('spreads');
+    [
+      ['line', 'Line', 'a fine filament along the form'],
+      ['dotted', 'Dotted', 'rows of evenly spaced dots'],
+      ['ribbon', 'Ribbon', 'a flat band, wide one way and thin the other'],
+      ['tube', 'Tube', 'a hollow sleeve wrapped round the form'],
+      ['cloud', 'Cloud', 'a soft volume that fills the space around it'],
+      ['splash', 'Splash', 'a burst outward, dense at the form and thinning out'],
+    ].forEach(function (s) { card(S, s[1], s[2], { motif: 'knot', spread: s[0], motion: 'drift', count: 14000, size: .36 }); });
+    card(S, 'Shell', 'points on a surface (here a torus)', { motif: 'torus', spread: 'shell', motion: 'drift', count: 16000, size: .4, tilt: .55 });
+    card(S, 'Stipple', 'points filling a symbol (here the ∞ character)', { motif: ParticleMotif.fromText('∞'), spread: 'stipple', motion: 'drift', count: 14000, size: .5 });
+
+    var M = document.getElementById('motions');
+    [
+      ['static', 'Static', 'drawn once: for print, posters or a still hero'],
+      ['drift', 'Drift', 'each point wanders a little; the form holds'],
+      ['flow', 'Flow', 'points travel along the form'],
+      ['breathe', 'Breathe', 'the spread swells and settles'],
+    ].forEach(function (m) { card(M, m[1], m[2], { motif: 'lemniscate', spread: 'ribbon', motion: m[0], count: 14000, size: .36 }); });
+    card(M, 'Morph', 'one form gathers into another and back (cloud to ring)', { motif: 'sphere', spread: 'cloud', motion: 'morph', morphTo: 'ring', count: 14000, size: .36, amount: 1.4 });
+
+    var C = document.getElementById('concepts');
+    card(C, 'Closing the loop', 'a single line that returns to its start · knot · line · flow', { motif: 'knot', spread: 'line', motion: 'flow', count: 20000, size: .38 },
+      "{ motif: 'knot', spread: 'line', motion: 'flow' }");
+    card(C, 'Growth', 'a spiral widening from a seed · spiral · splash · drift', { motif: 'spiral', spread: 'splash', motion: 'drift', count: 22000, size: .4, amount: .55, tilt: .6 },
+      "{ motif: 'spiral', spread: 'splash', amount: .55, tilt: .6 }");
+    card(C, 'Listening', 'rings spreading across a still surface · ripples · shell · drift', { motif: 'ripples', spread: 'shell', motion: 'drift', count: 26000, size: .42, tilt: .55 },
+      "{ motif: 'ripples', spread: 'shell', tilt: .55 }");
+    card(C, 'Trust', 'two rings that hold each other · linked · tube · flow', { motif: 'linked', spread: 'tube', motion: 'flow', count: 22000, size: .42, amount: .7, tilt: .35, turn: .5 },
+      "{ motif: 'linked', spread: 'tube', motion: 'flow', amount: .7 }");
+    card(C, 'The messy middle', 'a loose cloud that finds its shape, then lets go · sphere to ring · cloud · morph', { motif: 'sphere', spread: 'cloud', motion: 'morph', morphTo: 'knot', count: 22000, size: .4, amount: 1.6 },
+      "{ motif: 'sphere', spread: 'cloud', motion: 'morph', morphTo: 'knot' }");
+    card(C, 'Momentum', 'a coil pushing forward · helix · ribbon · flow', { motif: 'helix', spread: 'ribbon', motion: 'flow', count: 20000, size: .36, tilt: .2, turn: 1.2, speed: 1.6 },
+      "{ motif: 'helix', spread: 'ribbon', motion: 'flow', turn: 1.2 }");
+    card(C, 'A signal', 'a surface carrying a moving wave · wave · shell · drift', { motif: 'wave', spread: 'shell', motion: 'drift', count: 26000, size: .42, tilt: .35 },
+      "{ motif: 'wave', spread: 'shell', tilt: .35 }");
+    card(C, 'Hello, from a symbol', 'any text, emoji or SVG path, sampled into points · fromText · stipple · breathe', { motif: ParticleMotif.fromText('hello', { font: '500 300px "Instrument Sans", sans-serif' }), spread: 'stipple', motion: 'breathe', count: 22000, size: .56 },
+      "{ motif: ParticleMotif.fromText('hello'), spread: 'stipple', motion: 'breathe' }");
+  }
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go);
+})();
+</script>
+</body>
+</html>
