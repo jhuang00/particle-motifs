@@ -21,6 +21,8 @@ When the choice is open, the skill has the agent build a page of still options t
 git clone https://github.com/jhuang00/particle-motifs ~/.claude/skills/particle-motifs
 ```
 
+**Claude apps**: download `particle-motifs.skill` from the [latest release](https://github.com/jhuang00/particle-motifs/releases/latest) and upload it in your skills settings.
+
 **Other agents**: the skill is a folder of Markdown instructions plus `assets/particle-motif.js`. Point your agent at `SKILL.md`.
 
 ## Use
