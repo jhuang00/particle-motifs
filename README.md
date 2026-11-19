@@ -56,7 +56,7 @@ The engine also works on its own, with no agent:
 
 ## How it was made
 
-I built it while redesigning my portfolio, which uses particle forms in its hero and footer. The lessons file records what I corrected along the way. Then I tested it on fresh agents that had only the skill to go on, across seven briefs (a climate nonprofit hero, a talk slide, a personal mark, noise resolving into rhythm, a portrait social post, a word in ink on a light page, and a two-layer hero), and fixed each place they got stuck.
+I built it while experimenting with particle forms and building my portfolio. Recorded and iterated on what I corrected along the way. Then I tested it on fresh agents that had only the skill to go on, across seven briefs (a climate nonprofit hero, a talk slide, a personal mark, noise resolving into rhythm, a portrait social post, a word in ink on a light page, and a two-layer hero), and fixed each place they got stuck.
 
 ## Licence
 
